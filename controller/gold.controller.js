@@ -50,6 +50,7 @@ exports.createGoldbet = async (req, res) => {
             const newschema = await BetForm.findOne({ roomID: roomID });
 
             if (newschema) {
+
             io.to(roomID).emit("timer_update", { timeLeft: `${hours}:${minutes}:${seconds}`, status: "Running",touch:newschema.touch });
            
             }
@@ -70,6 +71,7 @@ io.on("connection", (socket) => {
     console.log("A user connected:", socket.id);
 
     socket.on("join_room", (roomID) => {
+        console.log(`User ${socket.id} joined room ${roomID}`);
         if (activeTimers[roomID]) {
             socket.join(roomID);
             console.log(`User ${socket.id} joined room ${roomID}`);
