@@ -26,22 +26,7 @@ app.use(express.json());
 app.use("/api", route);
 
 // Handle WebSocket connections
-io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
 
-    socket.on("join_room", (roomID) => {
-        if (activeTimers[roomID]) {
-            socket.join(roomID);
-            console.log(`User ${socket.id} joined room ${roomID}`);
-        } else {
-            socket.emit("error", { message: "Invalid or expired room ID" });
-        }
-    });
-
-    socket.on("disconnect", () => {
-        console.log("A user disconnected:", socket.id);
-    });
-});
 // Connect to the database before starting the server
 connect_db();
 

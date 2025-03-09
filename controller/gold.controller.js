@@ -48,6 +48,7 @@ exports.createGoldbet = async (req, res) => {
             const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
             const newschema = await BetForm.findOne({ roomID: roomID });
+
             if (newschema) {
             
             
@@ -66,6 +67,23 @@ exports.createGoldbet = async (req, res) => {
         return  res.status(500).json({ message: e.message });
      }
 };
+
+io.on("connection", (socket) => {
+    console.log("A user connected:", socket.id);
+
+    socket.on("join_room", (roomID) => {
+        if (activeTimers[roomID]) {
+            socket.join(roomID);
+            console.log(`User ${socket.id} joined room ${roomID}`);
+        } else {
+            socket.emit("error", { message: "Invalid or expired room ID" });
+        }
+    });
+
+    socket.on("disconnect", () => {
+        console.log("A user disconnected:", socket.id);
+    });
+});
 
 // Handle socket connections
 
