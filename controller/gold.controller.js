@@ -85,6 +85,6 @@ io.on("connection", (socket) => {
     });
 });
 
-server.listen(process.env.socketport, () => {
+server.listen(process.env.socketport,'0.0.0.0', () => {
     console.log(`Server listening on port ${process.env.socketport}`);
 });
