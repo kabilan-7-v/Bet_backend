@@ -10,6 +10,7 @@ const BetFormSchema = new mongoose.Schema({
     interception: String,
     description: String,
     category: String,
+    roomID:String,
 });
 
 module.exports = mongoose.model("BetForm", BetFormSchema);
