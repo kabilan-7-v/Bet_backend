@@ -68,23 +68,4 @@ exports.createGoldbet = async (req, res) => {
 };
 
 // Handle socket connections
-io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
 
-    socket.on("join_room", (roomID) => {
-        if (activeTimers[roomID]) {
-            socket.join(roomID);
-            console.log(`User ${socket.id} joined room ${roomID}`);
-        } else {
-            socket.emit("error", { message: "Invalid or expired room ID" });
-        }
-    });
-
-    socket.on("disconnect", () => {
-        console.log("A user disconnected:", socket.id);
-    });
-});
-
-server.listen(process.env.socketport, () => {
-    console.log(`Server listening on port ${process.env.socketport}`);
-});
