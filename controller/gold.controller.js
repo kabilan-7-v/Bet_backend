@@ -50,8 +50,6 @@ exports.createGoldbet = async (req, res) => {
             const newschema = await BetForm.findOne({ roomID: roomID });
 
             if (newschema) {
-            
-            
             io.to(roomID).emit("timer_update", { timeLeft: `${hours}:${minutes}:${seconds}`, status: "Running",touch:newschema.touch });
            
             }

@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require("dotenv");
+const cors = require('cors');
 const http = require('http'); // Required for WebSockets
 const { Server } = require('socket.io');
 const { route } = require('./router/gold.router.js');
