@@ -4,11 +4,7 @@ const { Server } = require('socket.io');
 const { v4: uuidv4 } = require('uuid'); // For generating unique room IDs
 const BetForm = require("../Models/bet_form.model.js"); 
 
-const app = express();
-app.use(express.json()); // To parse JSON request bodies
-
-const server = http.createServer(app);
-const io = new Server(server);
+let io ;
 
 const activeTimers = {}; // To store timers for each room
 
@@ -67,23 +63,33 @@ exports.createGoldbet = async (req, res) => {
      }
 };
 
+exports.connectt= (server)=>{
+    io   = new Server(server,  {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        }
+    });
+
 io.on("connection", (socket) => {
-    console.log("A user connected:", socket.id);
+    
+    
 
     socket.on("join_room", (roomID) => {
+       
+
+        
+        socket.join(roomID);
         console.log(`User ${socket.id} joined room ${roomID}`);
-        if (activeTimers[roomID]) {
-            socket.join(roomID);
-            console.log(`User ${socket.id} joined room ${roomID}`);
-        } else {
-            socket.emit("error", { message: "Invalid or expired room ID" });
-        }
+        
     });
 
     socket.on("disconnect", () => {
         console.log("A user disconnected:", socket.id);
     });
 });
+}
+
 
 // Handle socket connections
 
